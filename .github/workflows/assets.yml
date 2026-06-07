@@ -1,0 +1,66 @@
+name: Generate Assets
+
+on:
+  # every 12 hours
+  schedule:
+    - cron: "0 */12 * * *"
+  # manual trigger
+  workflow_dispatch:
+  # on push to default branch
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # 1) contribution snake -> dist/github-snake*.svg
+      #    (Platane/snk is a Docker action running as root, so dist/ ends up root-owned)
+      - name: Generate contribution snake
+        uses: Platane/snk@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/github-snake.svg
+            dist/github-snake-dark.svg?palette=github-dark
+
+      # 2) trophy renderer (Deno project)
+      - name: Checkout trophy renderer
+        uses: actions/checkout@v4
+        with:
+          repository: AtomsH4/github-profile-trophy
+          ref: master
+          path: trophy-src
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v1.x
+
+      # 3) assemble everything into a runner-owned dir (avoids root-owned dist write error)
+      - name: Assemble assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p public
+          sudo cp dist/*.svg public/ 2>/dev/null || cp dist/*.svg public/
+          cd trophy-src
+          printf 'GITHUB_TOKEN1=%s\n' "$GH_TOKEN" > .env
+          deno run --allow-net --allow-env --allow-read --allow-write \
+            ./render_svg.ts "${{ github.repository_owner }}" "$GITHUB_WORKSPACE/public/trophy.svg" radical
+          sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE/public" || true
+          ls -la "$GITHUB_WORKSPACE/public"
+
+      # 4) publish all generated assets to the output branch
+      - name: Push generated assets to output branch
+        uses: crazy-max/ghaction-github-pages@v4
+        with:
+          target_branch: output
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
