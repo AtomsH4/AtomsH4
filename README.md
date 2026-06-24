@@ -66,7 +66,7 @@
 <div align="center">
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/AtomsH4)
-[![Blog](https://img.shields.io/badge/Blog-ff2e97?style=flat-square&logo=githubpages&logoColor=white)](https://atoms-h.github.io)
+[![Blog](https://img.shields.io/badge/Blog-ff2e97?style=flat-square&logo=githubpages&logoColor=white)](https://atomsh4.github.io/Atoms-H.github.io/)
 [![Cnblogs](https://img.shields.io/badge/Cnblogs-2D8CF0?style=flat-square&logo=rss&logoColor=white)](https://www.cnblogs.com/atomsh)
 
 </div>
