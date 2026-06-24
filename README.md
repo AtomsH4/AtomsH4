@@ -9,12 +9,12 @@
 
 </div>
 
-> ### ▸ About Me
+> ### About Me
 > 🤖 **Playing**: AI &amp; Web <br/>
 > 🧠 **Learning**: Full-stack Development, Product Design &amp; Agents <br/>
 > 🎮 **Motto**: Keep coding, keep playing
 
-<h2 align="center">▰▰ TECH STACK ▰▰ · 技术栈</h2>
+<h2 align="center"> TECH STACK · 技术栈</h2>
 
 <div align="center">
 
@@ -32,7 +32,7 @@
 
 </div>
 
-<h2 align="center">▰▰ STATS ▰▰ · 数据面板</h2>
+<h2 align="center"> STATS · 数据面板</h2>
 
 <div align="center">
 
@@ -41,7 +41,7 @@
 
 </div>
 
-<h2 align="center">▰▰ TROPHY ▰▰ · 成就</h2>
+<h2 align="center"> TROPHY · 成就</h2>
 
 <div align="center">
 
@@ -49,7 +49,7 @@
 
 </div>
 
-<h2 align="center">▰▰ SNAKE ▰▰ · 贪吃蛇贡献图</h2>
+<h2 align="center"> SNAKE · 贡献图</h2>
 
 <div align="center">
 
@@ -61,7 +61,7 @@
 
 </div>
 
-<h2 align="center">▰▰ CONNECT ▰▰ · 联系</h2>
+<h2 align="center"> CONNECT · 联系</h2>
 
 <div align="center">
 
