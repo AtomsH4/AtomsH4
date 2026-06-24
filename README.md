@@ -9,10 +9,10 @@
 
 </div>
 
-> ### ▸ PLAYER 1 · 关于我
-> 🤖 **Playing / 在玩**: AI &amp; Web <br/>
-> 🧠 **Learning / 在学**: Full-stack Development, Product Design &amp; Agents <br/>
-> 🎮 **Motto / 信条**: Keep coding, keep playing
+> ### ▸ About Me
+> 🤖 **Playing**: AI &amp; Web <br/>
+> 🧠 **Learning**: Full-stack Development, Product Design &amp; Agents <br/>
+> 🎮 **Motto**: Keep coding, keep playing
 
 <h2 align="center">▰▰ TECH STACK ▰▰ · 技术栈</h2>
 
