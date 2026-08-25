@@ -51,8 +51,14 @@ jobs:
           sudo cp dist/*.svg public/ 2>/dev/null || cp dist/*.svg public/
           cd trophy-src
           printf 'GITHUB_TOKEN1=%s\n' "$GH_TOKEN" > .env
-          deno run --allow-net --allow-env --allow-read --allow-write \
-            ./render_svg.ts "${{ github.repository_owner }}" "$GITHUB_WORKSPACE/public/trophy.svg" flat
+          if ! deno run --allow-net --allow-env --allow-read --allow-write \
+            ./render_svg.ts "${{ github.repository_owner }}" "$GITHUB_WORKSPACE/public/trophy.svg" flat; then
+            echo "::warning::Trophy renderer failed; using the previous trophy with white card backgrounds."
+            curl --fail --silent --show-error \
+              "https://raw.githubusercontent.com/${{ github.repository }}/output/trophy.svg" \
+              | sed 's/fill="#141321"/fill="#FFFFFF"/g' \
+              > "$GITHUB_WORKSPACE/public/trophy.svg"
+          fi
           sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE/public" || true
           ls -la "$GITHUB_WORKSPACE/public"
 
