@@ -36,8 +36,8 @@
 
 <div align="center">
 
-<img height="165" src="https://atomsh4-stats.vercel.app/api?username=AtomsH4&show_icons=true&hide_border=true&bg_color=0D1117&title_color=FF2E97&icon_color=00E5FF&text_color=C9D1D9&include_all_commits=true" alt="AtomsH4 GitHub stats" />
-<img height="165" src="https://atomsh4-stats.vercel.app/api/top-langs/?username=AtomsH4&layout=compact&hide_border=true&bg_color=0D1117&title_color=FF2E97&text_color=C9D1D9" alt="Top languages" />
+<img height="165" src="https://atomsh4-stats.vercel.app/api?username=AtomsH4&show_icons=true&hide_border=true&bg_color=FFFFFF&title_color=FF2E97&icon_color=00A6B8&text_color=24292F&include_all_commits=true" alt="AtomsH4 GitHub stats" />
+<img height="165" src="https://atomsh4-stats.vercel.app/api/top-langs/?username=AtomsH4&layout=compact&hide_border=true&bg_color=FFFFFF&title_color=FF2E97&text_color=24292F" alt="Top languages" />
 
 </div>
 
@@ -65,7 +65,7 @@
 
 <div align="center">
 
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/AtomsH4)
+[![GitHub](https://img.shields.io/badge/GitHub-F5F7FA?style=flat-square&logo=github&logoColor=24292F)](https://github.com/AtomsH4)
 [![Blog](https://img.shields.io/badge/Blog-ff2e97?style=flat-square&logo=githubpages&logoColor=white)](https://atomsh4.github.io/Atoms-H.github.io/)
 [![Cnblogs](https://img.shields.io/badge/Cnblogs-2D8CF0?style=flat-square&logo=rss&logoColor=white)](https://www.cnblogs.com/atomsh)
 

@@ -52,7 +52,7 @@ jobs:
           cd trophy-src
           printf 'GITHUB_TOKEN1=%s\n' "$GH_TOKEN" > .env
           deno run --allow-net --allow-env --allow-read --allow-write \
-            ./render_svg.ts "${{ github.repository_owner }}" "$GITHUB_WORKSPACE/public/trophy.svg" radical
+            ./render_svg.ts "${{ github.repository_owner }}" "$GITHUB_WORKSPACE/public/trophy.svg" flat
           sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE/public" || true
           ls -la "$GITHUB_WORKSPACE/public"
 
