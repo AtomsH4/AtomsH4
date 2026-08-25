@@ -56,7 +56,21 @@ jobs:
             echo "::warning::Trophy renderer failed; using the previous trophy with white card backgrounds."
             curl --fail --silent --show-error \
               "https://raw.githubusercontent.com/${{ github.repository }}/output/trophy.svg" \
-              | sed 's/fill="#141321"/fill="#FFFFFF"/g' \
+              | sed \
+                  -e 's/#141321/#FFFFFF/g' \
+                  -e 's/#EEEEEE/#FFFFFF/g' \
+                  -e 's/#fe428e/#FF2E97/g' \
+                  -e 's/#a9fef7/#24292F/g' \
+                  -e 's/#50fa7b/#00A6B8/g' \
+                  -e 's/#ffce32/#FF2E97/g' \
+                  -e 's/#CB8A30/#FFFFFF/g' \
+                  -e 's/#8DF7B5/#00A6B8/g' \
+                  -e 's/#3A3A3A/#24292F/g' \
+                  -e 's/#EA3F25/#D0D7DE/g' \
+                  -e 's/#1E65F5/#94A3B8/g' \
+                  -e 's/#ff5555/#FF2E97/g' \
+                  -e 's/#ff15d9/#00E5FF/g' \
+                  -e 's/#ff61c6/#FF2E97/g' \
               > "$GITHUB_WORKSPACE/public/trophy.svg"
           fi
           sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE/public" || true
