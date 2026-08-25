@@ -77,6 +77,7 @@ jobs:
                   -e 's/fill="#FFFFFF">A<\/text>/fill="#24292F">A<\/text>/g' \
                   -e 's/__B_RANK_SWAP__/#94A3B8/g' \
                   -e 's/__C_RANK_SWAP__/#D0D7DE/g' \
+              | perl -0pe 's{(<g transform="translate\(20\.000000,60\.000000\) scale\(0\.00400000,-0\.00400000\)" fill=")#00A6B8(" stroke="none">.*?</g>\s*</svg>\s*<svg x="(?:7|68)" y="35"[^>]*fill="#FF2E97")}{$1#F2B233$2}gs; s{(<g transform="translate\(20\.000000,60\.000000\) scale\(0\.00400000,-0\.00400000\)" fill="#F2B233" stroke="none">.*?)(?=\s*<text x="50%" y="18")}{$x=$1;$x=~s/#FF2E97/#F2B233/g;$x}gse' \
               > "$GITHUB_WORKSPACE/public/trophy.svg"
           fi
           sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE/public" || true
