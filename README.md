@@ -36,8 +36,8 @@
 
 <div align="center">
 
-<img height="165" src="https://atomsh4-stats.vercel.app/api?username=AtomsH4&show_icons=true&hide_border=true&bg_color=FFFFFF&title_color=FF2E97&icon_color=00A6B8&text_color=24292F&include_all_commits=true" alt="AtomsH4 GitHub stats" />
-<img height="165" src="https://atomsh4-stats.vercel.app/api/top-langs/?username=AtomsH4&layout=compact&hide_border=true&bg_color=FFFFFF&title_color=FF2E97&text_color=24292F" alt="Top languages" />
+<img height="165" src="https://raw.githubusercontent.com/AtomsH4/AtomsH4/output/stats.svg" alt="AtomsH4 GitHub stats" />
+<img height="165" src="https://raw.githubusercontent.com/AtomsH4/AtomsH4/output/top-langs.svg" alt="Top languages" />
 
 </div>
 
