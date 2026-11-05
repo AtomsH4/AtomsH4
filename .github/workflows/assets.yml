@@ -14,11 +14,55 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: profile-assets
+  cancel-in-progress: false
+
 jobs:
   generate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Checkout profile sources
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Checkout previous assets
+        uses: actions/checkout@v4
+        with:
+          ref: output
+          path: previous-assets
+          persist-credentials: false
+
+      - name: Test stats publication safeguards
+        run: python3 -m unittest discover -s tests
+
+      - name: Generate stats card
+        continue-on-error: true
+        uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
+        with:
+          card: stats
+          options: username=${{ github.repository_owner }}&show_icons=true&hide_border=true&bg_color=FFFFFF&title_color=FF2E97&icon_color=00A6B8&text_color=24292F&include_all_commits=true
+          path: generated-stats/stats.svg
+          core_version: "2.2.0"
+          fail_on_error: "true"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate top languages card
+        continue-on-error: true
+        uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
+        with:
+          card: top-langs
+          options: username=${{ github.repository_owner }}&layout=compact&hide_border=true&bg_color=FFFFFF&title_color=FF2E97&text_color=24292F
+          path: generated-stats/top-langs.svg
+          core_version: "2.2.0"
+          fail_on_error: "true"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate stats cards and retain previous cards on failure
+        run: python3 scripts/publish-stats.py
+
       # 1) contribution snake -> dist/github-snake*.svg
       #    (Platane/snk is a Docker action running as root, so dist/ ends up root-owned)
       - name: Generate contribution snake
@@ -42,7 +86,7 @@ jobs:
         with:
           deno-version: v1.x
 
-      # 3) assemble everything into a runner-owned dir (avoids root-owned dist write error)
+      # 3) add snake and trophy to the validated stats in the runner-owned public dir
       - name: Assemble assets
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

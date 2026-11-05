@@ -1,55 +1,52 @@
-# SETUP · 让 STATS 卡片上线
+# SETUP · GitHub Actions 静态卡片
 
-`README.md` 里的 **STATS（数据面板）** 卡片指向你自己的 Vercel 自托管实例
-（`atomsh4-stats`），需要你部署一次（约 5 分钟）。部署完成前这块会显示为裂图，其余部分
-（标题、打字机、徽章、贪吃蛇、奖杯、联系方式）发布后即可用。
+STATS、TROPHY 和 SNAKE 都由 `.github/workflows/assets.yml` 生成静态 SVG，
+统一发布到本仓库的 `output` 分支。主页直接读取这些文件。
 
-> 为什么要自托管：公共的 `github-readme-stats.vercel.app` 实例长期被限流甚至暂停
-> （发布时正处于 `DEPLOYMENT_PAUSED`）。自托管后永不限流，且卡片样式完全一致。
->
-> **TROPHY（成就）** 已改为由 GitHub Action 直接渲染成静态 SVG（和贪吃蛇一样推到
-> `output` 分支），**无需任何部署**。
+## 自动更新
 
----
+`Generate Assets` 工作流在以下情况运行：
 
-## 0. 准备一个 GitHub Token（两个实例共用）
+- 每 12 小时一次：UTC 00:00 / 12:00，即北京时间 08:00 / 20:00；定时任务可能排队延迟。
+- 推送到 `main` 分支。
+- 手动进入 **Actions → Generate Assets → Run workflow**。
 
-1. 打开 https://github.com/settings/tokens → **Generate new token (classic)**。
-2. 名称随意，**无需勾选任何 scope**（只读公开数据即可）；如果以后想统计私有仓库，再勾选 `repo`。
-3. 生成后复制 token（形如 `ghp_xxx`），下面两步都会用到。
+工作流使用 GitHub 自动提供的 `GITHUB_TOKEN`，只统计可访问的公开数据，无需配置个人 Token。
+仓库的 Actions 必须启用；工作流声明了发布 `output` 分支所需的 `contents: write` 权限。
 
----
+## STATS 生成与发布
 
-## 1. 部署 STATS 实例（github-readme-stats）
+两张卡片由固定版本的
+[GitHub Readme Stats Action](https://github.com/stats-organization/github-readme-stats-action)
+直接在 Actions runner 中渲染：
 
-1. 打开 https://vercel.com/new ，用 GitHub 登录。
-2. Import 仓库：先 Fork 一份 https://github.com/anuraghazra/github-readme-stats 到自己名下，
-   再在 Vercel 里 Import 这个 fork（或直接用仓库 README 里的 **Deploy** 按钮）。
-3. **Project Name 必须设为 `atomsh4-stats`**（这样域名才是 `https://atomsh4-stats.vercel.app`，
-   与 README 中的链接一致）。
-4. 展开 **Environment Variables**，添加：
-   - Name: `PAT_1`
-   - Value: 第 0 步的 token
-5. 点 **Deploy**，等待完成。
-6. 打开 `https://atomsh4-stats.vercel.app/api?username=AtomsH4` 验证能出图。
+| 文件 | 内容 |
+| --- | --- |
+| `output/stats.svg` | GitHub 统计，保留 `include_all_commits=true` |
+| `output/top-langs.svg` | 紧凑语言统计 |
+| `output/trophy.svg` | 成就 |
+| `output/github-snake.svg` | 浅色贡献图 |
+| `output/github-snake-dark.svg` | 深色贡献图 |
 
----
+这里的 `output/` 表示 Git 分支，不是 `main` 分支里的目录。
+README 使用 `https://raw.githubusercontent.com/AtomsH4/AtomsH4/output/<文件名>`。
 
-## 2. 完成
+统计卡片保留白色背景、粉色标题、青色图标和原有的 165 像素显示高度。
+生成器启用 `fail_on_error`，阻止 GitHub API 错误被当作正常图片写入。
 
-实例上线后，刷新 https://github.com/AtomsH4 ，STATS 卡片会自动出现，无需改动 `README.md`。
+`scripts/publish-stats.py` 会校验新文件的 SVG 结构、卡片文字及错误提示。
+每张卡片单独回退：新图不可用时，使用 `output` 分支里上一张通过校验的图片；
+如果新图和旧图都不可用，工作流失败并停止发布，保留线上已有资源。
+Actions 运行摘要会列出每张卡片是更新还是沿用旧图。
 
-> 如果你用了**别的 Project Name**，只需把 `README.md` 里的域名
-> `atomsh4-stats.vercel.app` 替换成你的实际域名即可。
+工作流使用并发锁，避免两次运行同时覆盖 `output` 分支。
 
----
+## 检查与排错
 
-## 关于贪吃蛇 🐍 和奖杯 🏆（全自动，无需部署）
+1. 查看 **Actions → Generate Assets** 的最新运行和 **Stats cards** 摘要。
+2. 直接打开 [stats.svg](https://raw.githubusercontent.com/AtomsH4/AtomsH4/output/stats.svg)
+   和 [top-langs.svg](https://raw.githubusercontent.com/AtomsH4/AtomsH4/output/top-langs.svg)。
+3. 如遇 API 限流，工作流会提示并尝试保留旧图；待额度恢复后手动重跑。
+4. 原始 SVG 已更新而主页仍显示旧图时，等待 GitHub 图片代理缓存刷新。
 
-`.github/workflows/assets.yml` 会在每次 push、每 12 小时、以及手动触发时：
-
-- 用 `Platane/snk` 把贡献图生成贪吃蛇 SVG；
-- 用 `github-profile-trophy` 的 `render_svg.ts` 渲染奖杯静态 SVG；
-
-并把 `github-snake.svg` / `github-snake-dark.svg` / `trophy.svg` 一起推到 `output` 分支。
-首次发布后会自动跑一次；也可在 **Actions 标签页 → Generate Assets → Run workflow** 手动触发。
+统计卡片已不依赖 `atomsh4-stats.vercel.app`。已有的 Vercel 项目可以自行保留或关闭。
