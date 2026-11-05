@@ -1,4 +1,6 @@
+from contextlib import redirect_stdout
 import importlib.util
+import io
 from pathlib import Path
 import tempfile
 import unittest
@@ -28,7 +30,9 @@ class PublishStatsTests(unittest.TestCase):
             (directory / name).write_text(VALID_SVG.format(label), encoding="utf-8")
 
     def stage(self):
-        publisher.stage_cards(self.generated, self.previous, self.output)
+        # Expected failures in fixtures must not create GitHub Actions warnings.
+        with redirect_stdout(io.StringIO()):
+            publisher.stage_cards(self.generated, self.previous, self.output)
 
     def test_fresh_cards_replace_previous_cards(self):
         self.write_cards(self.generated, "Fresh stats")
